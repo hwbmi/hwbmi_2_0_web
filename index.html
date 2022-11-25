@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   
+    <script> 
+      // Configuratiion
+      var experimental=true;
+      var local_api = false;
+      
+      if (local_api) {
+        var apiUrlBase = "http://localhost:5000/";
+      } else {
+        //var apiUrlBase = "https://api-for-sql.herokuapp.com/";
+        var apiUrlBase = "https://makerkang.com:5000/";
+      }
+
+      console.log(apiUrlBase);   
+      
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="RIZAP Web Tools">
+    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+    <meta name="author" content="">
+    <meta name="robots" content="noindex, nofollow">
+    <title>HWBMI 雲端二代</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+    <!--font style-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Lineawesome CSS -->
+    <link rel="stylesheet" href="assets/css/line-awesome.min.css">
+
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+
+    <!-- Datetimepicker CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="assets/css/theme-settings.css">
+
+    <!-- Loading CSS -->
+    <link rel="stylesheet" href="assets/css/loading.css" />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body id="skin-color" class="inter">
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+      <!-- Header -->
+      <div class="header" id="heading">
+      <!--Move to heading.html, loaded by JS-->
+      </div>
+      <!-- /Header -->
+
+      <!-- Sidebar -->
+      <div class="sidebar" id="sidebar">
+        <!-- Move to sidebar.html, loaded by JS-->           
+      </div>
+      <!-- /Sidebar -->
+
+      <!-- Reservation Page Wrapper -->
+      <div class="page-wrapper" id="checkin-page">   
+        <!-- Move to rsvPage.html, loaded by JS-->     
+      </div>
+      <!-- /ReservationPage Wrapper -->       
+     
+      <!-- Reservation Page Wrapper -->
+      <div class="page-wrapper" id="rsv-page">   
+        <!-- Move to rsvPage.html, loaded by JS-->     
+      </div>
+      <!-- /ReservationPage Wrapper -->      
+      
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- jQuery -->
+    <script src="assets/js/jquery-3.5.0.min.js"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
+
+    <script src="assets/js/select2.min.js"></script>
+
+    <!-- Datatable JS -->
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Datetimepicker JS -->
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- theme JS -->
+    <script src="assets/js/theme-settings.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/app.js"></script>
+
+    <!-- loading JS -->
+    <script src="assets/js/loading.js"></script>
+
+    <!-- Multi-langs JS -->
+    <script src="multiLangsTable.js"></script>	
+    <script src="assets/js/multi-langs.js"></script>	
+
+    <!--dataTables 1.7.0 -->
+    <script src="assets/js/dataTables.buttons.min.js"></script>
+
+    <!-- jszip 3.1.3-->
+    <script src="assets/js/jszip.min.js"></script>
+    
+    <!-- JSBarCode-->
+    <script src="assets/js/JsBarcode.all.min.js"></script>
+    
+    <!-- pdfmake 支援中文字型比較麻煩，不先用
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    -->
+
+    <!-- HTML5 export buttons for Buttons and DataTables. 2016 SpryMedia Ltd - datatables.net/license
+    FileSaver.js (1.3.3) - MIT license Copyright © 2016 Eli Grey - http://eligrey.com -->
+    <script src="assets/js/buttons.html5.min.js  "></script>
+
+    <!-- My Functions all defined in functions.js-->
+    <script src="functions.js"></script>
+    
+    <!-- Main Start-->
+    <script type="text/javascript"> 
+      
+      var today = new Date();
+      
+      var users=[];
+      
+    
+      // variables for each page data load status
+      var rsvData_is_loaded = false;
+
+      // variables for Tables
+      var rsvResult=[];
+    
+      loadPages();      
+      
+      readUserDB();
+      readDataDB();
+      
+      function readUserDB(){ //by API
+        //TO BE IMPLEMENTED
+        console.log("Reading user database...");
+        fetch('http://127.0.0.1:8000?API=00')
+        .then((response) => response.json())
+        .then((data) => {users=data; console.log(users);})
+        .catch((error) => console.log(error));
+      }    
+      
+      function readDataDB(){ //by API
+        //TO BE IMPLEMENTED
+        console.log("Reading data database...");
+      }        
+                    
+    </script>
+    
+    <style>
+      ::-webkit-calendar-picker-indicator {
+        filter: invert(0.5);
+      }
+    </style>
+    
+    <div id="多國語言訊息" style="display:none">
+      <span id="ml-信用卡">信用卡</span>
+      <span id="ml-現金">現金</span>
+      <span id="ml-無卡分期">無卡分期</span>
+      <span id="ml-讀取資料">讀取資料</span>
+      <span id="ml-讀取課程設定">讀取課程設定</span>
+      <span id="ml-讀取合約">讀取合約</span>
+    </div>
+
+  </body>
+</html>
