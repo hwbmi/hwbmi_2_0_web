@@ -83,7 +83,7 @@
       <!-- /ReservationPage Wrapper -->       
      
       <!-- Reservation Page Wrapper -->
-      <div class="page-wrapper" id="rsv-page">   
+      <div class="page-wrapper" id="user-page">   
         <!-- Move to rsvPage.html, loaded by JS-->     
       </div>
       <!-- /ReservationPage Wrapper -->      
@@ -157,32 +157,27 @@
       var rsvData_is_loaded = false;
 
       // variables for Tables
+      var userResult=[];
       var rsvResult=[];
     
-      loadPages();      
-      
-      readUserDB();
-      readDataDB();
-      
-      function readUserDB(){ //by API
-        //TO BE IMPLEMENTED
-        console.log("Reading user database...");
-        fetch('http://127.0.0.1:8000?API=00')
-        .then((response) => response.json())
-        .then((data) => {users=data; console.log(users);})
-        .catch((error) => console.log(error));
-      }    
-      
-      function readDataDB(){ //by API
-        //TO BE IMPLEMENTED
-        console.log("Reading data database...");
-      }        
+      loadPages();        
+       
                     
     </script>
     
     <style>
       ::-webkit-calendar-picker-indicator {
         filter: invert(0.5);
+      }
+      
+      .刪除按鈕 {
+        font-size:14px;
+        background-color:red; 
+        color:white;
+        border-width:0px;
+        border-radius:5px;
+        vertical-align:top; 
+        margin-right:5px;
       }
     </style>
     

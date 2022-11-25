@@ -20,10 +20,11 @@ async function loadPages(){
     //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
   });
     
-  $("#rsv-page").load("./HtmlPages/dataPage.html", function(){
-    console.log("data-page loaded");
-    rsvCheck();
-    rsvData_is_loaded = true;
+  $("#user-page").load("./HtmlPages/userPage.html", function(){
+    console.log("user-page loaded");
+    readUserDB();
+    //rsvCheck();
+    userData_is_loaded = true;
       
     show_checkin_page();
     //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
@@ -39,20 +40,51 @@ function show_checkin_page(){
 
 }
 
-function show_rsv_page(){
+function show_user_page(){
   $(".page-wrapper").hide(); // hide all pages with page-wrapper class
   $(".sidebar-item").css("color","white")
 
-  $("#rsv-page").show(); 
-  $("#ml-Sidebar-check-reservations").css("color", "#FBF279");
-  //$("#ml-Sidebar-check-expirations").css("color", "white");            
-  //$("#sidebar-check-reservations-icon").css("color", "#FBF279");            
-  //$("#sidebar-check-expirations-icon").css("color", "white");            
-  if (!rsvData_is_loaded) {
-    rsvCheck();
-    rsvData_is_loaded = true;     
+  $("#user-page").show(); 
+  $("#ml-Sidebar-check-users").css("color", "#FBF279");
+           
+  if (!userData_is_loaded) {
+    readUserDB();
+    userData_is_loaded = true;     
   }
 }
+
+function readUserDB(){ //by API
+  console.log("Reading userData");
+  $.loading.start($("#ml-讀取用戶資料").text());
+  fetch('http://127.0.0.1:8000?API=00')
+  .then((response) => response.json())
+  .then((data) => {
+    users=data;
+    userResult=[];
+    
+    for (var i=0; i < data.length; i++){
+      var user=[];
+      user.push(data[i].id);
+      user.push(data[i].name);
+      user.push(data[i].birth);
+      user.push(data[i].phone);
+      user.push(data[i].others);
+      
+      userResult.push(user);
+    }
+ 
+    userDataTable.clear();
+    userDataTable.rows.add(userResult).draw();
+    
+    $.loading.end()
+  })
+  .catch((error) => console.log(error));
+}    
+
+function readDataDB(){ //by API
+  //TO BE IMPLEMENTED
+  console.log("Reading data database...");
+} 
 
 function rsvCheck(){
   var startDateStr = $("#rsvQueryStartDate").val();
