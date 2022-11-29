@@ -5,7 +5,7 @@
     <div class='col'>
       <h3 class='page-title m-0'>
         <span class='page-title-icon bg-gradient-primary text-white'>
-          <i class='fa fa-check-square-o' aria-hidden='true'></i> <!--icon 視需要修改-->
+          <i class='fa fa-user-circle' aria-hidden='true'></i> <!--icon 視需要修改-->
         </span>
         <span id='ml-用戶查詢' style='font-size:22px'>用戶查詢</span>
       </h3>
@@ -46,16 +46,34 @@
       </div>
     </div>
   </div>
+  
+<div id="myModal" class="my_modal">
+
+  <!-- Modal content -->
+  <!--  <div class="modal-content">-->
+  <div style="background:gray; position:absolute; top:100px; z-index: 99">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+    <svg></svg>
+  </div>
+
+</div>  
 
   <div style='margin: 10px'>
+<!--
     <span style='margin-left:0px' id ='ml-開始日期'>開始日期</span>
     <input id='userQueryStartDate' type='date' />
     <span style='margin-left:30px' id ='ml-結束日期'>結束日期</span>
     <input id='userQueryEndDate' type='date'/>
-        
-    <button style='margin-left:30px' class='btn-gradient-primary font-weight-bold' onclick='userCheck()' >
-      <span id='ml-檢查'>檢 查</span>
-    </button>
+-->
+    
+    <button style='margin-left:15px' class='btn-gradient-primary font-weight-bold' onclick='userCheck()' >
+      <span id='ml-匯入用戶檔'>匯入用戶檔 (CSV 格式)</span>
+    </button> 
+                
+    <button style='margin-left:15px; width:100px' class='btn-gradient-primary font-weight-bold' onclick='userCheck()' >
+      <span id='ml-新增用戶'>新增用戶</span>
+    </button>  
         
     <button type='button' style='float:right' class='btn-gradient-primary font-weight-bold' data-toggle='modal' data-target='#userSelHideColumn'>
       <span id='ml-選擇顯示欄位'>選擇顯示欄位</span>
@@ -75,11 +93,12 @@
               <thead>
                 <tr>
                   <th id='ml-使用者ID'>ID</th>
-                  <th id='ml-用戶姓名'>用戶姓名</th>
-                  <th id='ml-出生年用日'>出生年用日</th>
+                  <th id='ml-姓名'>姓名</th>
+                  <th id='ml-出生年月日'>出生年月日</th>
                   <th id='ml-手機號碼'>手機號碼</th>
                   <th id='ml-其他'>其他</th>
-                  <th id='ml-動作'></th>
+                  <th ></th>
+                  <th ></th>
                 </tr>
               </thead>
             </table>
@@ -121,18 +140,23 @@
     var userDataTable =$('#userDataTable').DataTable( {
       dom: 'Bfrtip',
       buttons: [
-        { 'extend': 'csv', 'text':'<span id="ml-匯出CSV">匯出 CSV</span>','className': 'btn-gradient-primary font-weight-bold' },
-        { 'extend': 'excel', 'text':'<span id="ml-匯出EXCEL">匯出 EXCEL</span>','className': 'btn-gradient-primary font-weight-bold' }
+        { 'extend': 'csv', 'text':'<span id="ml-匯出用戶檔">匯出用戶檔 (CSV 格式)</span>','className': 'btn-gradient-primary font-weight-bold' },
+        //{ 'extend': 'excel', 'text':'<span id="ml-匯出EXCEL">匯出 EXCEL</span>','className': 'btn-gradient-primary font-weight-bold' }
       ], 
       order: [[ 0, 'asc' ]], 
       data: userResult,  
       pageLength: 8,
       columnDefs: [
+        { targets: -2, 
+          render: function (data, type, row, meta) {  
+            return  `<button id="checkDetails`+meta.row.toString()+`" class="刪除按鈕" onClick="alert(`+meta.row+`)">`+'<span id="ml-刪除">刪除</span>'+`</button>`;
+          },
+        },
         { targets: -1, 
           render: function (data, type, row, meta) {  
-            return  `<button id="checkDetails`+meta.row.toString()+`" class="刪除按鈕" onClick="alert(`+meta.row+`)">`+'刪除'+`</button>`;
+            return  `<button id="checkDetails`+meta.row.toString()+`" class="顯示條碼" onClick="alert(`+meta.row+`)">`+'<span id="ml-顯示條碼">顯示條碼</span>'+`</button>`;
           },
-        }
+        }        
       ] 
     } );
     
