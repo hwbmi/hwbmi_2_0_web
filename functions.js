@@ -1,3 +1,4 @@
+var userData_is_loaded = false;
 
 async function loadPages(){
   $("#heading").load("./HtmlPages/heading.html", function(){
@@ -13,22 +14,18 @@ async function loadPages(){
 
     //$("#sidebar-check-expirations").hide(); //disable check expirarion function
   });
-
-//  $("#checkin-page").load("./HtmlPages/checkinPage.html", function(){
-//    console.log("checkin-page loaded");
-//    //show_checkin_page();
-//    //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
-//  });
     
   $("#user-page").load("./HtmlPages/userPage.html", function(){
     console.log("user-page loaded");
-    readUserDB();
-    //rsvCheck();
-    userData_is_loaded = true;
-      
     show_user_page();
+    userData_is_loaded = true;
     //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
   });
+  
+  $("#data-page").load("./HtmlPages/dataPage.html", function(){
+    console.log("data-page loaded");
+    //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
+  });  
 }
 
 function show_checkin_page(){
@@ -40,7 +37,7 @@ function show_checkin_page(){
 
 }
 
-function show_user_page(){
+async function show_user_page(){
   $(".page-wrapper").hide(); // hide all pages with page-wrapper class
   $(".sidebar-item").css("color","white")
 
@@ -48,9 +45,90 @@ function show_user_page(){
   $("#ml-Sidebar-check-users").css("color", "#FBF279");
            
   if (!userData_is_loaded) {
-    readUserDB();
+    // read users dattabase
+    users = await readUserDBsync();
+    
+    // 取出 刪除表
+    var users_delete=users.shift();
+    
+    // 更新表格資料
+    for (var i=0; i < users.length; i++){
+      if (!users_delete.includes(i.toString())) {
+        var temp=[];
+        temp.push(users[i].id);
+        temp.push(users[i].name);
+        temp.push(users[i].birth);
+        temp.push(users[i].phone);
+        temp.push(users[i].others);
+        temp.push(i); // i is the original index of all users include deleted ones
+
+        userResult.push(temp);
+      }
+    }
+    
+    // 更新表格
+    userDataTable.clear();
+    userDataTable.rows.add(userResult).draw();
+    
+    // 設定 flag 避免每次都重新載入
     userData_is_loaded = true;     
   }
+}
+
+//function show_user_page(){
+//  $(".page-wrapper").hide(); // hide all pages with page-wrapper class
+//  $(".sidebar-item").css("color","white")
+//
+//  $("#user-page").show(); 
+//  $("#ml-Sidebar-check-users").css("color", "#FBF279");
+//           
+//  if (!userData_is_loaded) {
+//    readUserDB();
+//    userData_is_loaded = true;     
+//  }
+//}
+
+async function show_data_page(){
+  $(".page-wrapper").hide(); // hide all pages with page-wrapper class
+  $(".sidebar-item").css("color","white")
+
+  $("#data-page").show(); 
+  $("#ml-Sidebar-check-data").css("color", "#FBF279");
+        
+  users = await readUserDBsync(); //for test
+  var data_delete=users.shift();
+  
+  data_delete=[]; //for test
+  
+  dataResult=[];
+  for (var i=0; i < users.length; i++){
+    if (!data_delete.includes(i.toString())) {
+      var user=[];
+      user.push(users[i].id);
+      user.push(users[i].name);
+      user.push(users[i].birth);
+      user.push(users[i].phone);
+      user.push(users[i].others);
+      user.push(i); // i is the original index of all users include deleted ones
+
+      dataResult.push(user);
+    }
+  }
+
+  dataDataTable.clear();
+  dataDataTable.rows.add(dataResult).draw();    
+}
+
+async function readUserDBsync(){
+  return new Promise(function (resolve, reject) {
+  fetch('http://127.0.0.1:8000?API=00')
+  .then((response) => response.json())
+  .then((data) => {
+    $.loading.end();
+    resolve(data);
+  })
+  .catch((error) => reject);    
+  })
 }
 
 function readUserDB(){ 

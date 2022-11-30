@@ -4,64 +4,67 @@
   <div class='crms-title row bg-white'>
     <div class='col'>
       <h3 class='page-title m-0'>
-        <span class='page-title-icon bg-gradient-primary text-white'>
-          <i class='fa fa-check-square-o' aria-hidden='true'></i> <!--icon 視需要修改-->
+<!--        <span class='page-title-icon bg-gradient-primary text-white' style="background-color:white">-->
+        <span class='' style="background-color:white">
+          <i class='fa fa-database' aria-hidden='true' style="font-size:25px"></i> <!--icon 視需要修改-->
         </span>
-        <span id='ml-量測紀錄查詢' style='font-size:22px'>量測紀錄查詢</span>
+        <span id='ml-資料查詢' style='font-size:22px'>資料查詢</span>
       </h3>
     </div>
   </div>
+  
   <!-- 顯示/隱藏 欄位 選擇 Modal -->
-  <div class='modal' id='rsvSelHideColumn' tabindex='-1' role='dialog' aria-labelledby='ml-選擇顯示欄位' aria-hidden='true'>
+
+  <div class='modal' id='dataSelHideColumn' tabindex='-1' role='dialog' aria-labelledby='ml-選擇顯示欄位' aria-hidden='true'>
     <div class='modal-dialog' role='document'>
       <div class='modal-content'>
         <div class='modal-header'>
-          <h4 class='modal-title' id='ml-選擇顯示欄位'>Modal title</h4>
+          <h4 class='modal-title' id='ml-選擇顯示欄位'>選擇顯示欄位</h4>
           <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
             <span aria-hidden='true'>&times;</span>
           </button>
         </div>
               
         <div style='margin-top=10px'>
-          <button type='button' class='btn btn-secondary' style='margin:10px;background:#4CC3D5;border:none' onclick='rsvDispAll()'>
+          <button type='button' class='btn btn-secondary' style='margin:10px;background:#4CC3D5;border:none' onclick='dataDispAll()'>
             <span id='ml-全部顯示'></span>
           </button>
-          <button type='button' class='btn btn-secondary' style='margin:10px;background:#6D757D;border:none' onclick='rsvHideAll()'>
+          <button type='button' class='btn btn-secondary' style='margin:10px;background:#6D757D;border:none' onclick='dataHideAll()'>
             <span id='ml-全部隱藏'></span>
           </button>
         </div>
               
-        <div class='modal-body' id='rsv_modal'>
-          <!--內容由下面程式 append-->
+        <div class='modal-body' id='data_modal'>
+          內容由下面程式 append
         </div>
               
         <div class='modal-footer'>
           <button type='button' class='btn btn-secondary' data-dismiss='modal'>
             <span id='ml-放棄設定'></span>
           </button>
-          <button type='button' class='btn btn-primary' onclick='rsvSetDispHide()'>
+          <button type='button' class='btn btn-primary' onclick='dataSetDispHide()'>
             <span id='ml-儲存設定'></span>
           </button>
         </div>
       </div>
     </div>
   </div>
-
+  
   <div style='margin: 10px'>
     <span style='margin-left:0px' id ='ml-開始日期'>開始日期</span>
-    <input id='rsvQueryStartDate' type='date' />
+    <input id='dataQueryStartDate' type='date' />
     <span style='margin-left:30px' id ='ml-結束日期'>結束日期</span>
-    <input id='rsvQueryEndDate' type='date'/>
+    <input id='dataQueryEndDate' type='date'/>
         
-    <button style='margin-left:30px' class='btn-gradient-primary font-weight-bold' onclick='rsvCheck()' >
-      <span id='ml-檢查'>檢 查</span>
+    <button style='margin-left:30px' class='btn-gradient-primary font-weight-bold' onclick='dataCheck()' >
+      <span id='ml-查詢時段'>查詢時段</span>
     </button>
         
-    <button type='button' style='float:right' class='btn-gradient-primary font-weight-bold' data-toggle='modal' data-target='#rsvSelHideColumn'>
+    <button type='button' style='float:right' class='btn-gradient-primary font-weight-bold' data-toggle='modal' data-target='#dataSelHideColumn'>
       <span id='ml-選擇顯示欄位'>選擇顯示欄位</span>
     </button>
         
-    <button id='hidden_rsv_Col' type='button' style='display:none; float:right;color:black;background:white; margin-right:10px' class='btn-gradient-primary font-weight-bold' >
+    <button id='hidden_data_Col' type='button' style='display:none; float:right;color:black;background:white; margin-right:10px' class='btn-gradient-primary font-weight-bold' >
       <span id='ml-有隱藏欄位'>有隱藏欄位</span>
     </button>
   </div>
@@ -71,17 +74,15 @@
       <div class='card mb-0'>
         <div class='card-body'>
           <div class='table-responsive'>
-            <table id='rsvDataTable' class='table table-striped table-nowrap custom-table mb-0'>
+            <table id='dataDataTable' class='table table-striped table-nowrap custom-table mb-0'>
               <thead>
                 <tr>
-                  <th id='ml-店鋪名稱'>店鋪名稱</th>
-                  <th id='ml-客戶名字'>店鋪名稱</th>
-                  <th id='ml-合約編號'>店鋪名稱</th>
-                  <th id='ml-預約日期'>店鋪名稱</th>
-                  <th id='ml-預約時間'>店鋪名稱</th>
-                  <th id='ml-負責教練'>店鋪名稱</th>
-                  <th id='ml-是否完成' style='width:20px'>店鋪名稱</th>
-                  <th id='ml-備註說明'>店鋪名稱</th>
+                  <th id='ml-使用者ID'>ID</th>
+                  <th id='ml-姓名'>姓名</th>
+                  <th id='ml-出生年月日'>出生年月日</th>
+                  <th id='ml-手機號碼'>手機號碼</th>
+                  <th id='ml-其他'>其他</th>
+                  <th ></th>
                 </tr>
               </thead>
             </table>
@@ -92,79 +93,84 @@
   </div>
 
   <script>
-    function rsvSetDispHide(){
+    
+    // functions
+    function dataSetDispHide(){
       var someColIsHidden = false;
-      for (var i=0;i<rsvCol_nums;i++){
-        var col_check_id = '#rsvCol_' + i.toString();
-        rsvDataTable.column(i).visible(($(col_check_id).prop('checked')));
+      for (var i=0;i<dataCol_nums;i++){
+        var col_check_id = '#dataCol_' + i.toString();
+        dataDataTable.column(i).visible(($(col_check_id).prop('checked')));
         if (!($(col_check_id).prop('checked'))) someColIsHidden = true;
       }
-      (someColIsHidden)? $('#hidden_rsv_Col').show():$('#hidden_rsv_Col').hide();
-      $('#rsvSelHideColumn').modal('toggle');
+      (someColIsHidden)? $('#hidden_data_Col').show():$('#hidden_data_Col').hide();
+      $('#dataSelHideColumn').modal('toggle');
     }
 
-    function rsvDispAll(){
-      for (var i=0;i<rsvCol_nums;i++){
-        var col_check_id = '#rsvCol_' + i.toString();
+    function dataDispAll(){
+      for (var i=0;i<dataCol_nums;i++){
+        var col_check_id = '#dataCol_' + i.toString();
         $(col_check_id).prop('checked', true);
       }
     }
 
-    function rsvHideAll(){
-      for (var i=0;i<rsvCol_nums;i++){
-        var col_check_id = '#rsvCol_' + i.toString();
+    function dataHideAll(){
+      for (var i=0;i<dataCol_nums;i++){
+        var col_check_id = '#dataCol_' + i.toString();
         $(col_check_id).prop('checked', false);
       }
     }
 
-    $('#rsvQueryStartDate').val(today.toISOString().substr(0,10));
-    $('#rsvQueryEndDate').val(today.toISOString().substr(0,10));  
+    // Startup script
     
-    var rsvDataTable =$('#rsvDataTable').DataTable( {
+    var dataDataTable =$('#dataDataTable').DataTable( {
       dom: 'Bfrtip',
       buttons: [
-        { 'extend': 'csv', 'text':'<span id="ml-匯出CSV">匯出 CSV</span>','className': 'btn-gradient-primary font-weight-bold' },
-        { 'extend': 'excel', 'text':'<span id="ml-匯出EXCEL">匯出 EXCEL</span>','className': 'btn-gradient-primary font-weight-bold' }
+        { 'extend': 'csv', 'text':'<span id="ml-匯出用戶檔">匯出用戶檔 (CSV 格式)</span>','className': 'btn-gradient-primary font-weight-bold' },
+        //{ 'extend': 'excel', 'text':'<span id="ml-匯出EXCEL">匯出 EXCEL</span>','className': 'btn-gradient-primary font-weight-bold' }
       ], 
-      order: [[ 3, 'asc' ]], 
-      data: rsvResult,  
+      order: [[ 0, 'asc' ]], 
+      data: dataResult,  
+      pageLength: 8,
       columnDefs: [
-        { targets: [6,],
-          render: function (data) {
-            if (data==true)
-              return  '<i class="fa fa-check-square-o" aria-hidden="true"></i><span style="display:none" >Y</span>';
-            else 
-              return  '<i class="fa fa-times" aria-hidden="true"></i><span style="display:none">N</span>';
+        { targets: -1, 
+          render: function (data, type, row, meta) {  
+            return  `<button id="checkDetails`+meta.row.toString()+`" class="刪除按鈕" onClick="deletedata(`+meta.row+`)">`+'<span id="ml-刪除">刪除</span>'+`</button>`;
           },
-        },
+        }     
       ] 
     } );
+    
+    
     // 處理 顯示/隱藏 的 modal 裡的項目
-    var rsvCol_nums = rsvDataTable.columns()[0].length;
-    for (var i=0; i< rsvCol_nums; i+=2 ){
-      var name_0= rsvDataTable.column(i).header().outerHTML.split('\"')[1]; 
-      if ((i+1) < rsvCol_nums) var name_1 = rsvDataTable.column(i+1).header().outerHTML.split('\"')[1];
+    var dataCol_nums = dataDataTable.columns()[0].length-2; // 扣掉 刪除和 顯示條碼 兩個欄位
+    for (var i=0; i< dataCol_nums; i+=2 ){
+      var name_0= dataDataTable.column(i).header().outerHTML.split('\"')[1]; ;
+      if ((i+1) < dataCol_nums) var name_1 = dataDataTable.column(i+1).header().outerHTML.split('\"')[1];
       var appendHTML=
       `<div class='row'>
           <div class='col'>
-            <input id='rsvCol_${i}' type='checkbox' checked=true /> 
+            <input id='dataCol_${i}' type='checkbox' checked=true /> 
             <span id='${name_0}'></span>
           </div>
       `;
-      appendHTML+= ((i+1) >= rsvCol_nums)?'':
+      appendHTML+= ((i+1) >= dataCol_nums)?'':
       `   <div class='col'>
-            <input id='rsvCol_${i+1}' type='checkbox' checked=true /> 
+            <input id='dataCol_${i+1}' type='checkbox' checked=true /> 
             <span id='${name_1}'></span>
           </div>
       `;
         
-      $('#rsv_modal').append(appendHTML);
+      $('#data_modal').append(appendHTML);
     }
+     
+    $('#hidden_data_Col').hide();
         
-    $('#hidden_rsv_Col').hide();
-        
-    if (localStorage.getItem('lang')!=null) setLang(localStorage.getItem('lang'));
+    if (localStorage.getItem('lang')!=null) {
+      setLang(localStorage.getItem('lang'));
+    } else {
+      setLang(localStorage.getItem('en'));      
+    }
     
-    $('#rsvDataTable').width('100%');    
+    $('#dataDataTable').width('100%');    
   </script>
 </div>
