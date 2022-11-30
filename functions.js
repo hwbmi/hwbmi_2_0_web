@@ -8,17 +8,17 @@ async function loadPages(){
   $("#sidebar").load("./HtmlPages/sidebar.html", function(){
     console.log("sidebar loaded");
     $("#sidebar-contacts").addClass("active");
-  $("#ml-Sidebar-checkin").css("color", "#FBF279");       
+    $("#ml-Sidebar-check-users").css("color", "#FBF279");       
     //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));      
 
     //$("#sidebar-check-expirations").hide(); //disable check expirarion function
   });
 
-  $("#checkin-page").load("./HtmlPages/checkinPage.html", function(){
-    console.log("checkin-page loaded");
-    //show_checkin_page();
-    //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
-  });
+//  $("#checkin-page").load("./HtmlPages/checkinPage.html", function(){
+//    console.log("checkin-page loaded");
+//    //show_checkin_page();
+//    //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
+//  });
     
   $("#user-page").load("./HtmlPages/userPage.html", function(){
     console.log("user-page loaded");
@@ -26,7 +26,7 @@ async function loadPages(){
     //rsvCheck();
     userData_is_loaded = true;
       
-    show_checkin_page();
+    show_user_page();
     //if (localStorage.getItem("lang")!=null) setLang(localStorage.getItem("lang"));          
   });
 }
@@ -53,7 +53,10 @@ function show_user_page(){
   }
 }
 
-function readUserDB(){ //by API
+function readUserDB(){ 
+  
+  var test_delete=[];
+  
   console.log("Reading userData");
   $.loading.start($("#ml-讀取用戶資料").text());
   fetch('http://127.0.0.1:8000?API=00')
@@ -61,16 +64,21 @@ function readUserDB(){ //by API
   .then((data) => {
     users=data;
     userResult=[];
+  
+    test_delete=data.shift();
     
     for (var i=0; i < data.length; i++){
-      var user=[];
-      user.push(data[i].id);
-      user.push(data[i].name);
-      user.push(data[i].birth);
-      user.push(data[i].phone);
-      user.push(data[i].others);
-      
-      userResult.push(user);
+      if (!test_delete.includes(i.toString())) {
+        var user=[];
+        user.push(data[i].id);
+        user.push(data[i].name);
+        user.push(data[i].birth);
+        user.push(data[i].phone);
+        user.push(data[i].others);
+        user.push(i); // i is the original index of all users include deleted ones
+
+        userResult.push(user);
+      }
     }
  
     userDataTable.clear();

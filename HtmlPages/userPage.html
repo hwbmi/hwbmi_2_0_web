@@ -4,13 +4,15 @@
   <div class='crms-title row bg-white'>
     <div class='col'>
       <h3 class='page-title m-0'>
-        <span class='page-title-icon bg-gradient-primary text-white'>
-          <i class='fa fa-user-circle' aria-hidden='true'></i> <!--icon 視需要修改-->
+<!--        <span class='page-title-icon bg-gradient-primary text-white' style="background-color:white">-->
+        <span class='' style="background-color:white">
+          <i class='fa fa-user' aria-hidden='true' style="font-size:25px"></i> <!--icon 視需要修改-->
         </span>
         <span id='ml-用戶查詢' style='font-size:22px'>用戶查詢</span>
       </h3>
     </div>
   </div>
+  
   <!-- 顯示/隱藏 欄位 選擇 Modal -->
   <div class='modal' id='userSelHideColumn' tabindex='-1' role='dialog' aria-labelledby='ml-選擇顯示欄位' aria-hidden='true'>
     <div class='modal-dialog' role='document'>
@@ -47,31 +49,101 @@
     </div>
   </div>
   
-<div id="myModal" class="my_modal">
+  <!-- Barcode Modal -->
+  <style>
+    .barcode_modal {
+      display:none;
+      background:white; 
+      position:absolute; 
+      top:100px; left:500px; 
+      width:500px; 
+      border-width:2px;
+      border-color:black;
+      border-style:solid;
+      border-radius:10px;
+      z-index:1; 
+      text-align:center;
+    }
+  </style>
+  <div class="barcode_modal">
+    <span class="close" onclick='$(".barcode_modal").hide()'>&times; &nbsp</span>
 
-  <!-- Modal content -->
-  <!--  <div class="modal-content">-->
-  <div style="background:gray; position:absolute; top:100px; z-index: 99">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-    <svg></svg>
+    <svg style='height:100px' id="barcode1"></svg>
   </div>
 
-</div>  
+  
+  <!-- Add a new user Modal -->
+  <div class='modal' id='addUserModal' tabindex='-1' role='dialog' aria-labelledby='ml-新增用戶' aria-hidden='true'>
+    <div class='modal-dialog' role='document'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h3 class='modal-title' id='ml-新增用戶'>新增用戶</h3>
+          <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+            <span aria-hidden='true'>&times;</span>
+          </button>
+        </div>
+              
+           
+        <div style='margin: 20px'>
+          <span style='margin-left:0px; font-size:20px; margin-right:70px' id ='ml-日期'>日期</span>
+          <input style='font-size:20px; width:300px; border-width:2px; border-radius:8px' id='addUserDate' type='date' />
+        </div>
+
+        <div style='margin-top=10px'>
+          <button type='button' class='btn btn-secondary' style='margin:10px;background:#4CC3D5;border:none' onclick='addUserGenID()'>
+            <span id='ml-自動生成ID'>自動生成 ID</span>
+          </button>
+          <button type='button' class='btn btn-secondary' style='margin:10px;background:#6D757D;border:none; margin-left:0px' onclick='clearAddUserForm()'>
+            <span id='ml-清除資料'>清除資料</span>
+          </button>
+        </div>
+
+        <div style='margin: 20px; margin-top:0px'>
+          <span style='margin-left:0px; font-size:20px; margin-right: 27px' id ='ml-ID'>ID (必要)</span>
+          <input style='font-size:20px; width:300px; border-radius:8px' id='addUserID' type='text' placeholder="10 位英數字，輸入後按 Enter" onchange="checkUserExist()" />      
+        </div>
+
+        <div style='margin: 20px'>
+          <span style='margin-left:0px; font-size:20px; margin-right: 27px' id ='ml-姓名'>客戶姓名</span>
+          <input style='font-size:20px; width:300px; border-radius:8px' id='addUserName' type='text' placeholder=""/>
+        </div>
+
+        <div style='margin: 20px'>
+          <span style='margin-left:0px; font-size:20px; margin-right: 10px' id ='ml-出生年月日'>出生年月日</span>
+          <input style='font-size:20px; width:300px; border-width:2px; border-radius:8px' id='addUserBirth' type='date'/>
+        </div>
+
+        <div style='margin: 20px'>
+          <span style='margin-left:0px; font-size:20px; margin-right: 29px' id ='ml-手機號碼'>手機號碼</span>
+          <input style='font-size:20px; width:300px; border-radius:8px' id='addUserPhone' type='text' placeholder="格式：09XXXXXXXX"/>
+        </div>
+
+        <div style='margin: 20px'>
+          <span style='margin-left:0px; font-size:20px; margin-right: 69px' id ='ml-其他' >其他</span>
+          <input style='font-size:20px; width:300px; border-radius:8px' id='addUserOthers' type='text' placeholder="備註事項"/>
+        </div>
+                 
+        <div class='modal-footer'>
+          <button type='button' class='btn btn-secondary' data-dismiss='modal'>
+            <span id='ml-放棄設定'></span>
+          </button>
+          <button type='button' class='btn btn-primary' onclick='saveNewUser()'>
+            <span id='ml-儲存設定'></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
   <div style='margin: 10px'>
-<!--
-    <span style='margin-left:0px' id ='ml-開始日期'>開始日期</span>
-    <input id='userQueryStartDate' type='date' />
-    <span style='margin-left:30px' id ='ml-結束日期'>結束日期</span>
-    <input id='userQueryEndDate' type='date'/>
--->
-    
-    <button style='margin-left:15px' class='btn-gradient-primary font-weight-bold' onclick='userCheck()' >
+  
+    <button style='margin-left:10px' class='btn-gradient-primary font-weight-bold' onclick='userCheck()' >
       <span id='ml-匯入用戶檔'>匯入用戶檔 (CSV 格式)</span>
     </button> 
                 
-    <button style='margin-left:15px; width:100px' class='btn-gradient-primary font-weight-bold' onclick='userCheck()' >
+<!--    <button style='margin-left:15px; width:100px' class='btn-gradient-primary font-weight-bold' onclick='addNewUser()' >-->
+    <button style='margin-left:15px; width:100px' class='btn-gradient-primary font-weight-bold' data-toggle='modal' data-target='#addUserModal'>
       <span id='ml-新增用戶'>新增用戶</span>
     </button>  
         
@@ -109,6 +181,8 @@
   </div>
 
   <script>
+    
+    // functions
     function userSetDispHide(){
       var someColIsHidden = false;
       for (var i=0;i<userCol_nums;i++){
@@ -134,8 +208,172 @@
       }
     }
 
-    $('#userQueryStartDate').val(today.toISOString().substr(0,10));
-    $('#userQueryEndDate').val(today.toISOString().substr(0,10));  
+    function showUserBarcode(index){
+      console.log(userResult[index][0]);
+      JsBarcode("#barcode1", userResult[index][0], {height:58, displayValue:true});
+      $(".barcode_modal").show();
+    }
+    
+    
+    function addUserGenID(){
+      var timestamp = Date.now().toString();
+      var newID = timestamp.substr(0,10);
+
+      $("#addUserID").val(newID);  
+      lastID = newID;  
+    }    
+    
+    function clearAddUserForm(){
+        $("#addUserID").val("");
+        $("#addUserName").val("");
+        $("#addUserBirth").val(initBirth.toISOString().substr(0,10));
+        $("#addUserPhone").val("");
+        $("#addUserOthers").val("");   
+    }
+        
+    function checkUserExist(){
+      if (users.length==0) return false;
+
+      // sync operations, working.
+      for (var i=0; i< users.length; i++) {
+        console.log(users[i]);
+        if (users[i].id == $("#addUserID").val()) {
+          alert("用戶 ID:"+$("#addUserID").val()+ " 已存在！")
+          $("#addUserID").val("");
+          return(true);
+        }
+      };
+     console.log("no exit ID");
+      return false;
+    }
+    
+    function validUserData(){
+
+      if ($("#addUserID").val().length==0) {
+        alert("ID 為必要欄位");
+        return false;
+      }
+      
+      if ( ($("#addUserBirth").val().length>0) && 
+           ($("#addUserBirth").val()>today.toISOString().substr(0,10)) ) {
+        alert("生日不得在今天之後");
+        return false;
+      }
+
+      if ( ($("#addUserBirth").val().length>0) && 
+           ($("#addUserBirth").val()< oldestBirth.toISOString().substr(0,10)) ) {
+        alert("生日不得在西元 1900 年之前");
+        return false;
+      }
+      
+      if ($("#addUserPhone").val().length>0) {
+        if ($("#addUserPhone").val().match(/\d/g)==null){
+          alert("手機號碼需要 10 位數字");
+          return false;
+        }  
+        
+        if ($("#addUserPhone").val().match(/\d/g).length !=10){
+          alert("手機號碼需要 10 位數字");
+          return false;
+        }
+      }
+      
+      return true;
+    }
+    
+    function saveNewUser(){
+      
+      if (validUserData()) {
+        users.push(
+          {"id":$("#addUserID").val(),
+           "create_at": $('#addUserDate').val(),
+           "name": $("#addUserName").val(),
+           "birth": $("#addUserBirth").val(),
+           "phone": $("#addUserPhone").val(),
+           "others": $("#addUserOthers").val()
+          }
+        );
+        
+        //users -> userResult
+        userResult=[];
+        for (var i=0; i < users.length; i++){
+          var userResultTmp=[];
+          userResultTmp.push(users[i].id);
+          userResultTmp.push(users[i].name);
+          userResultTmp.push(users[i].birth);
+          userResultTmp.push(users[i].phone);
+          userResultTmp.push(users[i].others);
+
+          userResult.push(userResultTmp);
+        }
+        
+        userDataTable.clear();
+        userDataTable.rows.add(userResult).draw();
+        
+        var addUserParams = "&Id="+$("#addUserID").val() +
+                            "&Name=" + $("#addUserName").val() +
+                            "&Birth=" + $("#addUserBirth").val() +
+                            "&Phone=" +$("#addUserPhone").val() +
+                            "&Other=" + $("#addUserOthers").val() +
+                            "&Date=" + $('#addUserDate').val();
+        console.log(addUserParams);
+
+     
+        $.loading.start($("#ml-新增用戶資料").text());
+        fetch('http://127.0.0.1:8000?API=01'+addUserParams)
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data);
+          $.loading.end()
+          
+          clearAddUserForm();
+        
+          $("#addUserModal").modal('toggle');
+        
+          alert($("#userID").val()+" 的用戶資料已儲存");
+          
+        })
+        .catch((error) => console.log(error));
+          
+
+
+      }
+    }
+    
+    function deleteUser(index){
+      // position 5 is the index of user records
+      console.log(userResult[index][5]);
+      
+
+      
+      // API=02 假刪除資料庫
+        $.loading.start($("#ml-刪除用戶資料").text());
+        fetch('http://127.0.0.1:8000?API=02&UserIndex='+userResult[index][5].toString())
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data);
+          $.loading.end()
+        
+          alert("ID:"+userResult[index][0]+", "+userResult[index][1]+" 用戶已刪除");
+          // Remove the user from the table
+          users.splice(index,1);
+          userResult.splice(index,1);
+          userDataTable.clear();
+          userDataTable.rows.add(userResult).draw();
+          
+        })
+        .catch((error) => console.log(error));      
+      
+      
+    }
+    
+    // Startup script
+    var initBirth = new Date("1996-01-01");
+    var oldestBirth = new Date("1900-01-01");
+    var checkExistID = true;
+    
+    $('#addUserDate').val(today.toISOString().substr(0,10));
+    $("#addUserBirth").val(initBirth.toISOString().substr(0,10));
     
     var userDataTable =$('#userDataTable').DataTable( {
       dom: 'Bfrtip',
@@ -149,12 +387,12 @@
       columnDefs: [
         { targets: -2, 
           render: function (data, type, row, meta) {  
-            return  `<button id="checkDetails`+meta.row.toString()+`" class="刪除按鈕" onClick="alert(`+meta.row+`)">`+'<span id="ml-刪除">刪除</span>'+`</button>`;
+            return  `<button id="checkDetails`+meta.row.toString()+`" class="刪除按鈕" onClick="deleteUser(`+meta.row+`)">`+'<span id="ml-刪除">刪除</span>'+`</button>`;
           },
         },
         { targets: -1, 
           render: function (data, type, row, meta) {  
-            return  `<button id="checkDetails`+meta.row.toString()+`" class="顯示條碼" onClick="alert(`+meta.row+`)">`+'<span id="ml-顯示條碼">顯示條碼</span>'+`</button>`;
+            return  `<button id="checkDetails`+meta.row.toString()+`" class="顯示條碼" onClick="showUserBarcode(`+meta.row+`)">`+'<span id="ml-顯示條碼">顯示條碼</span>'+`</button>`;
           },
         }        
       ] 
@@ -162,7 +400,7 @@
     
     
     // 處理 顯示/隱藏 的 modal 裡的項目
-    var userCol_nums = userDataTable.columns()[0].length;
+    var userCol_nums = userDataTable.columns()[0].length-2; // 扣掉 刪除和 顯示條碼 兩個欄位
     for (var i=0; i< userCol_nums; i+=2 ){
       var name_0= userDataTable.column(i).header().outerHTML.split('\"')[1]; ;
       if ((i+1) < userCol_nums) var name_1 = userDataTable.column(i+1).header().outerHTML.split('\"')[1];
